@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMentor-AI - Programming Interview Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <span class="logo-icon">💡</span>
+                        <h1>CodeMentor-AI</h1>
+                    </div>
+                    <p class="tagline">Master Data Structures & Algorithms for Coding Interviews</p>
+                </div>
+                <div class="header-info">
+                    <p class="model-info">Powered by Ollama (tinyllama)</p>
+                    <div class="status-indicator">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span class="status-text" id="statusText">Checking...</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h2>Instructions</h2>
+                    <ul class="instructions-list">
+                        <li>Ask any DSA-related question</li>
+                        <li>Get hints and approaches first</li>
+                        <li>Learn time & space complexity</li>
+                        <li>See code examples when needed</li>
+                    </ul>
+                </div>
+                <div class="sidebar-section">
+                    <h2>Topics</h2>
+                    <div class="topics-grid">
+                        <span class="topic-tag">Arrays</span>
+                        <span class="topic-tag">Strings</span>
+                        <span class="topic-tag">Trees</span>
+                        <span class="topic-tag">Graphs</span>
+                        <span class="topic-tag">DP</span>
+                        <span class="topic-tag">Sorting</span>
+                    </div>
+                </div>
+                <button id="clearBtn" class="clear-btn">Clear Conversation</button>
+            </aside>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message assistant-message welcome-message">
+                        <div class="message-content">
+                            <h3>Welcome to CodeMentor-AI! 👋</h3>
+                            <p>I'm your AI programming interview assistant. I specialize in helping you master <strong>Data Structures and Algorithms</strong>.</p>
+                            <p><strong>How I work:</strong></p>
+                            <ul>
+                                <li>💭 <strong>Hint:</strong> I'll give you a nudge in the right direction</li>
+                                <li>🔍 <strong>Approach:</strong> I'll explain the strategy to solve it</li>
+                                <li>💻 <strong>Code:</strong> I can provide working code examples</li>
+                                <li>⏱️ <strong>Complexity:</strong> I'll always mention time and space complexity</li>
+                            </ul>
+                            <p>Ready? Ask me a DSA question and let's get started! 🚀</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-section">
+                    <form id="chatForm" class="chat-form">
+                        <div class="input-wrapper">
+                            <textarea 
+                                id="userInput" 
+                                class="chat-input" 
+                                placeholder="Ask a DSA question... (Press Ctrl+Enter to send)"
+                                rows="1"
+                            ></textarea>
+                            <button type="submit" class="send-btn" id="sendBtn">
+                                <span>Send</span>
+                                <span class="send-icon">→</span>
+                            </button>
+                        </div>
+                        <small class="hint-text">💡 Tip: You can ask about arrays, strings, trees, graphs, dynamic programming, sorting, and more!</small>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
