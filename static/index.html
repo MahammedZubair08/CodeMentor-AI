@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,10 +18,17 @@
                     <p class="tagline">Master Data Structures & Algorithms for Coding Interviews</p>
                 </div>
                 <div class="header-info">
-                    <p class="model-info">Powered by Ollama (tinyllama)</p>
-                    <div class="status-indicator">
-                        <span class="status-dot" id="statusDot"></span>
-                        <span class="status-text" id="statusText">Checking...</span>
+                    <div class="header-controls">
+                        <button id="themeToggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+                            <span class="theme-icon">🌙</span>
+                        </button>
+                        <div class="header-info-right">
+                            <p class="model-info">Powered by Ollama (tinyllama)</p>
+                            <div class="status-indicator">
+                                <span class="status-dot" id="statusDot"></span>
+                                <span class="status-text" id="statusText">Checking...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,34 @@
+// Theme Management
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+
+// Initialize theme on page load
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    const currentTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    setTheme(currentTheme);
+}
+
+function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    updateThemeIcon(theme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = themeToggle.querySelector('.theme-icon');
+    icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    themeToggle.title = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+}
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+});
+
 // DOM Elements
 const chatForm = document.getElementById('chatForm');
 const userInput = document.getElementById('userInput');
@@ -124,6 +155,30 @@ function addMessage(text, sender) {
     messageDiv.appendChild(contentDiv);
     chatMessages.appendChild(messageDiv);
     
+    // Add event listeners to copy buttons
+    const copyButtons = contentDiv.querySelectorAll('.copy-btn');
+    copyButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const encodedCode = this.getAttribute('data-code');
+            const code = atob(encodedCode);
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = this.innerHTML;
+                this.innerHTML = '<span class="copy-icon">✅</span><span class="copy-text">Copied!</span>';
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                this.innerHTML = '<span class="copy-icon">❌</span><span class="copy-text">Failed</span>';
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+    });
+    
     // Auto-scroll to latest message
     scrollToBottom();
 }
@@ -135,7 +190,26 @@ function formatMessage(text) {
     
     // Handle code blocks with triple backticks
     formatted = formatted.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, language, code) => {
-        return `<pre><code class="language-${language || 'text'}">${code.trim()}</code></pre>`;
+        // Decode HTML entities in the code
+        let decodedCode = decodeHtmlEntities(code.trim());
+        const encodedCode = btoa(decodedCode);
+        
+        // Re-escape for display
+        const displayCode = decodedCode
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        
+        return `<div class="code-block-container">
+            <div class="code-block-header">
+                <span class="code-language">${language || 'code'}</span>
+                <button class="copy-btn" data-code="${encodedCode}" title="Copy code">
+                    <span class="copy-icon">📋</span>
+                    <span class="copy-text">Copy</span>
+                </button>
+            </div>
+            <pre class="code-block"><code class="language-${language || 'text'}">${displayCode}</code></pre>
+        </div>`;
     });
     
     // Handle inline code with single backticks
@@ -183,6 +257,13 @@ function escapeHtml(text) {
         "'": '&#039;'
     };
     return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// Decode HTML entities
+function decodeHtmlEntities(text) {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
 }
 
 // Scroll to bottom of chat
@@ -240,6 +321,7 @@ topicTags.forEach(tag => {
 
 // Focus input on load
 window.addEventListener('load', () => {
+    initializeTheme();
     userInput.focus();
     // Check Ollama status on load
     checkOllamaStatus();

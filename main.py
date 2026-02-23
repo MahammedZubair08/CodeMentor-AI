@@ -37,6 +37,16 @@ def check_ollama_health():
     except:
         return False
 
+def clean_response(text: str) -> str:
+    """Clean up the response by removing unwanted prefixes"""
+    # Remove "Candidate:" prefix if it appears
+    text = text.strip()
+    if text.startswith("Candidate:"):
+        text = text[len("Candidate:"):].strip()
+    if text.startswith("Interviewer:"):
+        text = text[len("Interviewer:"):].strip()
+    return text
+
 @app.get("/health")
 def health_check():
     """Health check endpoint"""
@@ -86,6 +96,9 @@ def chat(request: ChatRequest):
             )
 
         reply = data["response"]
+        
+        # Clean up the response to remove unwanted prefixes
+        reply = clean_response(reply)
 
         conversation_memory.append(f"Interviewer: {reply}")
 
