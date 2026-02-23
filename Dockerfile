@@ -1,8 +1,8 @@
 FROM ubuntu:22.04
 
-# Install dependencies
+# Install dependencies (ADD zstd here 👇)
 RUN apt-get update && \
-    apt-get install -y curl python3 python3-pip
+    apt-get install -y curl python3 python3-pip zstd
 
 # Install Ollama
 RUN curl -fsSL https://ollama.com/install.sh | sh
@@ -16,7 +16,7 @@ COPY . .
 # Install Python requirements
 RUN pip3 install -r requirements.txt
 
-# Pull model (example: tinyllama)
+# Pull model
 RUN ollama pull tinyllama
 
 # Expose port
